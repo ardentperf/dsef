@@ -29,9 +29,12 @@ The quickest way to install DSEF is to create its functions with this command:
 
     curl https://raw.githubusercontent.com/ardentperf/dsef/main/sql/dsef.sql | psql
 
-DSEF can also be installed by an administrator as an **extension**. This requires 
-a few more steps but has some advantages. The functions are clearly identified as 
-part of a single package, the functions are not mixed up with user code in pg_dump
+The SQL file at the URL above can also be opened and executed with a GUI development 
+tool like pgAdmin.
+
+Alternatively, DSEF can be installed by an administrator as an **extension**. This 
+requires a few more steps but has some advantages. The functions are clearly identified 
+as part of a single package, the functions are not mixed up with user code in pg_dump
 backups, and the package versioning and metadata is tracked in system catalogs and
 much easier to manage. Installation as an extension is preferred, when possible.
 
