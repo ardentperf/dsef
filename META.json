@@ -8,10 +8,10 @@
     ],
     "license": "postgresql",
     "provides": {
-       "pair": {
+       "dsef": {
             "abstract": "DiffStats and ExplainFull: detailed SQL reports for 3rd party help & support",
-            "file": "sql/pair.sql",
-            "docfile": "doc/pair.md",
+            "file": "sql/dsef.sql",
+            "docfile": "README.md",
             "version": "2023.7.1"
        }
     },
