@@ -67,7 +67,7 @@ If DSEF is installed as an extension, then uninstalling it is very simple:
     DROP EXTENSION dsef
 
 If DSEF was installed as functions, you can carefully copy-and-paste the `DROP FUNCTION` 
-commands from https://github.com/ardentperf/dsef/sql/uninstall_dsef.sql
+commands from https://github.com/ardentperf/dsef/blob/main/sql/uninstall_dsef.sql
 
 
 Dependencies
