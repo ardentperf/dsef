@@ -1,0 +1,10 @@
+# dsef extension
+#
+# when changing the version make sure to also change in META.json and in dsef.sql (it's hard coded there on purpose)
+# to minimize confusion, let's keep the PGXN distribution version the same as the extension version
+#
+comment = 'DiffStats and ExplainFull'
+default_version = '2023.7.1'
+relocatable = true
+superuser = false
+requires = plpgsql

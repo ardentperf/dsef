@@ -1,0 +1,59 @@
+create extension dsef;
+create table dsef1 as select generate_series(1,1000) a;
+select ds_start(); 
+ ds_start 
+----------
+        0
+(1 row)
+
+select regexp_replace("QUERY PLAN",'Version:.*','Version') from explain_analyze_full($$ select max(a) from dsef1 $$) limit 1;; 
+NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,SETTINGS,WAL)  select max(a) from dsef1 
+NOTICE:  INFO: query execution complete; now resetting client_min_messages
+                          regexp_replace                          
+------------------------------------------------------------------
+ __________ DSEF for PostgreSQL (DiffStats & ExplainFull) Version
+(1 row)
+
+set client_min_messages=warning;
+select distinct scope from ds_report() where scope in ('Database','Instance');
+  scope   
+----------
+ Instance
+ Database
+(2 rows)
+
+select ds_start(); 
+ ds_start 
+----------
+        0
+(1 row)
+
+select regexp_replace("QUERY PLAN",'Version:.*','Version') from explain_analyze_full($$ select max(a) from dsef1 $$) limit 1;; 
+NOTICE:  INFO: query execution complete; now resetting client_min_messages
+                          regexp_replace                          
+------------------------------------------------------------------
+ __________ DSEF for PostgreSQL (DiffStats & ExplainFull) Version
+(1 row)
+
+select ds_capture();
+ ds_capture 
+------------
+          1
+(1 row)
+
+select regexp_replace("QUERY PLAN",'Version:.*','Version') from explain_analyze_full($$ select min(a) from dsef1 $$) limit 1;; 
+NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,SETTINGS,WAL)  select min(a) from dsef1 
+NOTICE:  INFO: query execution complete; now resetting client_min_messages
+                          regexp_replace                          
+------------------------------------------------------------------
+ __________ DSEF for PostgreSQL (DiffStats & ExplainFull) Version
+(1 row)
+
+set client_min_messages=warning;
+select distinct scope from ds_report_diff() where scope in ('Database','Instance');
+  scope   
+----------
+ Instance
+ Database
+(2 rows)
+
