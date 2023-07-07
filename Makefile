@@ -1,5 +1,4 @@
 # this makefile is based on the PGXN template
-
 EXTVERSION   = $(shell grep -m 1 '[[:space:]]\{8\}"version":' META.json | \
                sed -e 's/[[:space:]]*"version":[[:space:]]*"\([^"]*\)",\{0,1\}/\1/')
 DISTVERSION  = $(shell grep -m 1 '[[:space:]]\{3\}"version":' META.json | \
@@ -8,6 +7,7 @@ EXTABSTRACT  = $(shell grep -m 1 '[[:space:]]\{8\}"abstract":' META.json | \
                sed -e 's/[[:space:]]*"abstract":[[:space:]]*"\([^"]*\)",\{0,1\}/\1/')
 
 
+EXTENSION    = dsef
 DATA 		    = $(wildcard sql/*--*.sql)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
