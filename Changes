@@ -1,4 +1,6 @@
 Revision history for PostgreSQL extension dsef.
 
-2023.7.1   2023-07-01T00:00:00Z
+2023.7.1    2023-07-01T00:00:00Z
             - Initial version.
+2023.7.17   2023-07-17T00:00:00Z
+            - Include query in main ExplainFull output, bugfixes: show mcv w col, show cols missing stats

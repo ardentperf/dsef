@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION ds_version() RETURNS text AS $$
   -- the version of this package
-  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2023.7.1';
+  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2023.7.17';
 $$ LANGUAGE SQL;
 
 
@@ -30,6 +30,7 @@ DECLARE
   v_query text;
   v_function_count numeric;
   v_tab record;
+  v_col record;
   v_all_settings_to_output text[] = array[
        'log_temp_files'
       ,'log_lock_waits'
@@ -149,6 +150,8 @@ BEGIN
 
   v_query:=v_query||') '||p_sql;
   RAISE NOTICE 'INFO: %',v_query;
+  RETURN QUERY SELECT v_query;
+  RETURN QUERY SELECT ' ';
 
   SET client_min_messages=debug5;
   RETURN QUERY EXECUTE v_query;
@@ -250,18 +253,20 @@ BEGIN
     RETURN QUERY SELECT 'Table '||relnamespace::regnamespace::text||'.'||relname||': pages '||relpages||
           ', tuples '||reltuples||', allvisible '||relallvisible||', kind '||relkind::text 
       FROM pg_class WHERE oid=v_tab.relid;
-    RETURN QUERY SELECT '    '||s.attname||' '||pg_catalog.format_type(a.atttypid, a.atttypmod)||': stattarget '||a.attstattarget||
-          ', notnull '||attnotnull||', null_frac '||coalesce(null_frac::text,'NULL')||
-          ', avg_width '||coalesce(avg_width::text,'NULL')||', n_dist '||coalesce(n_distinct::text,'NULL')||
-          ', corr '||coalesce(correlation::text,'NULL')||
-          ', hist['||coalesce(array_length(histogram_bounds,1)::text,'')||'] '||coalesce(left(histogram_bounds::text,20)||'...'||right(histogram_bounds::text,20),'NULL')
-      FROM pg_stats s, pg_attribute a
-      WHERE a.attname=s.attname AND s.schemaname=v_tab.schemaname AND s.tablename=v_tab.relname AND a.attrelid=v_tab.relid;
-    RETURN QUERY SELECT '      mcv '||coalesce(left(most_common_vals::text,20)||'...'||right(most_common_vals::text,20),'NULL')||
-          ', mcf '||coalesce(left(most_common_freqs::text,20)||'...'||right(most_common_freqs::text,20),'NULL')
-      FROM pg_stats s
-      WHERE s.schemaname=v_tab.schemaname AND s.tablename=v_tab.relname
-        AND (most_common_vals IS NOT NULL or most_common_freqs IS NOT NULL);
+    FOR v_col IN SELECT a.attname, a.atttypid, a.atttypmod, a.attstattarget, attnotnull,
+                        null_frac, avg_width, n_distinct, correlation, histogram_bounds, most_common_vals, most_common_freqs
+                 FROM pg_attribute a LEFT JOIN pg_stats s ON (a.attname=s.attname)
+                 WHERE a.attrelid=v_tab.relid AND s.schemaname=v_tab.schemaname AND s.tablename=v_tab.relname LOOP
+      RETURN QUERY SELECT '    '||v_col.attname||' '||pg_catalog.format_type(v_col.atttypid, v_col.atttypmod)||': stattarget '||v_col.attstattarget||
+            ', notnull '||v_col.attnotnull||', null_frac '||coalesce(v_col.null_frac::text,'NULL')||
+            ', avg_width '||coalesce(v_col.avg_width::text,'NULL')||', n_dist '||coalesce(v_col.n_distinct::text,'NULL')||
+            ', corr '||coalesce(v_col.correlation::text,'NULL')||
+            ', hist['||coalesce(array_length(v_col.histogram_bounds,1)::text,'')||'] '||
+                       coalesce(left(v_col.histogram_bounds::text,20)||'...'||right(v_col.histogram_bounds::text,20),'NULL');
+      RETURN QUERY SELECT '      mcv '||coalesce(left(v_col.most_common_vals::text,20)||'...'||right(v_col.most_common_vals::text,20),'NULL')||
+            ', mcf '||coalesce(left(v_col.most_common_freqs::text,20)||'...'||right(v_col.most_common_freqs::text,20),'NULL')
+        WHERE v_col.most_common_vals IS NOT NULL or v_col.most_common_freqs IS NOT NULL;
+    END LOOP;
 
     IF v_server_version_num>=120000 THEN  -- v12 adds extended statistics
       RETURN QUERY SELECT '  Extended '||statistics_name||' '||attnames::text||': kinds '||kinds::text||

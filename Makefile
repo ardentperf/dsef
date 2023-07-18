@@ -26,10 +26,10 @@ sql/dsef--$(EXTVERSION).sql: sql/dsef.sql
 tle/dsef.tle: sql/dsef.sql
 	echo " DROP EXTENSION IF EXISTS dsef; " >$@
 	echo " SELECT * FROM pgtle.uninstall_extension_if_exists('dsef'); " >>$@
-	echo " SELECT pgtle.install_extension('dsef','$(EXTVERSION)','$(EXTABSTRACT)',\$$_pgtle_\$$ " >>$@
+	echo " SELECT pgtle.install_extension('dsef','$(EXTVERSION)','$(EXTABSTRACT)',\$$_pgtle_\$$" >>$@
 	cat sql/dsef.sql >>$@
-	echo " \$$_pgtle_\$$); " >>$@
-	echo " CREATE EXTENSION dsef; " >>$@
+	echo " \$$_pgtle_\$$);" >>$@
+	echo " CREATE EXTENSION dsef;" >>$@
 
 dist:
 	git archive --format zip --prefix=dsef-$(DISTVERSION)/ -o dsef-$(DISTVERSION).zip HEAD
