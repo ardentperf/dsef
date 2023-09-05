@@ -1,0 +1,20 @@
+# originally copied from https://github.com/theory/kv-pair/blob/main/.github/workflows/ci.yml
+#
+name: CI
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron:  '0 12 15 * *' # Monthly at noon on the 15th
+jobs:
+  build:
+    strategy:
+      matrix:
+        pg: [16, 15, 14, 13, 12, 11]
+    name: 🐘 PostgreSQL ${{ matrix.pg }}
+    runs-on: ubuntu-latest
+    container: pgxn/pgxn-tools
+    steps:
+      - run: pg-start ${{ matrix.pg }}
+      - uses: actions/checkout@v2
+      - run: pg-build-test
