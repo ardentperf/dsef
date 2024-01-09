@@ -61,7 +61,7 @@ Install extension to RDS 14.5+ (including Aurora)
     CREATE EXTENSION pg_tle;
 
     curl -O https://raw.githubusercontent.com/ardentperf/dsef/main/tle/dsef.tle
-    psql <desf.tle
+    psql <dsef.tle
 
 
 Un-Installation
