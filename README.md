@@ -27,7 +27,8 @@ Installation
 
 The quickest way to install DSEF is to create its functions with this command:
 
-    curl https://raw.githubusercontent.com/ardentperf/dsef/main/sql/dsef.sql | psql
+    curl -O https://raw.githubusercontent.com/ardentperf/dsef/main/sql/dsef.sql
+    psql <dsef.sql
 
 The SQL file at the URL above can also be opened and executed with a GUI development 
 tool like pgAdmin.
@@ -59,7 +60,8 @@ Install extension to RDS 14.5+ (including Aurora)
        --parameters "ParameterName=shared_preload_libraries,ParameterValue=pg_tle"    
     CREATE EXTENSION pg_tle;
 
-    curl https://raw.githubusercontent.com/ardentperf/dsef/main/tle/dsef.tle | psql
+    curl -O https://raw.githubusercontent.com/ardentperf/dsef/main/tle/dsef.tle
+    psql <desf.tle
 
 
 Un-Installation
