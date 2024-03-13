@@ -7,7 +7,7 @@ select ds_start();
 (1 row)
 
 select regexp_replace("QUERY PLAN",'Version:.*','Version') from explain_analyze_full($$ select max(a) from dsef1 $$) limit 1;; 
-NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,SETTINGS,WAL)  select max(a) from dsef1 
+NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,TIMING,SETTINGS,WAL)  select max(a) from dsef1 
 NOTICE:  INFO: query execution complete; now resetting client_min_messages
                           regexp_replace                          
 ------------------------------------------------------------------
@@ -48,7 +48,7 @@ select ds_capture();
 (1 row)
 
 select regexp_replace("QUERY PLAN",'Version:.*','Version') from explain_analyze_full($$ select min(a) from dsef1 $$) limit 1;; 
-NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,SETTINGS,WAL)  select min(a) from dsef1 
+NOTICE:  INFO: EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT TEXT,TIMING,SETTINGS,WAL)  select min(a) from dsef1 
 NOTICE:  INFO: query execution complete; now resetting client_min_messages
                           regexp_replace                          
 ------------------------------------------------------------------
