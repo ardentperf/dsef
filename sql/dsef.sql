@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION ds_version() RETURNS text AS $$
   -- the version of this package
-  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2023.7.17';
+  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2024.3.13';
 $$ LANGUAGE SQL;
 
 
@@ -131,7 +131,7 @@ BEGIN
   END IF;
 
   v_query:='EXPLAIN (ANALYZE,VERBOSE,COSTS,BUFFERS,FORMAT '||p_format;
-  IF v_server_version_num>=902000 THEN
+  IF v_server_version_num>=90200 THEN
     v_query = v_query||',TIMING';
     PERFORM ds_set($p$ track_io_timing=on       $p$);
   END IF;
@@ -163,7 +163,7 @@ BEGIN
     RETURN QUERY SELECT ' ' UNION ALL SELECT ' ' UNION ALL SELECT ' ';
     RETURN QUERY SELECT 'Cost      | Rows      | SpprtFn | Kind | SecDef | Leakprf | Strct | RetSet | Vltl | Prll | Calls     | Language | Function Name [Config]';
     RETURN QUERY SELECT '----------+-----------+---------+------+--------+---------+-------+--------+------+------+-----------+----------+------------------------';
-    IF v_server_version_num<906000 THEN
+    IF v_server_version_num<90600 THEN
       RETURN QUERY SELECT
           LPAD(procost::text,9)||' | '||
           LPAD(prorows::text,9)||' | '||
@@ -262,17 +262,17 @@ BEGIN
             ', avg_width '||coalesce(v_col.avg_width::text,'NULL')||', n_dist '||coalesce(v_col.n_distinct::text,'NULL')||
             ', corr '||coalesce(v_col.correlation::text,'NULL')||
             ', hist['||coalesce(array_length(v_col.histogram_bounds,1)::text,'')||'] '||
-                       coalesce(left(v_col.histogram_bounds::text,20)||'...'||right(v_col.histogram_bounds::text,20),'NULL');
-      RETURN QUERY SELECT '      mcv '||coalesce(left(v_col.most_common_vals::text,20)||'...'||right(v_col.most_common_vals::text,20),'NULL')||
-            ', mcf '||coalesce(left(v_col.most_common_freqs::text,20)||'...'||right(v_col.most_common_freqs::text,20),'NULL')
+                       coalesce(left(v_col.histogram_bounds::text,24)||'...'||right(v_col.histogram_bounds::text,24),'NULL');
+      RETURN QUERY SELECT '      mcv '||coalesce(left(v_col.most_common_vals::text,24)||'...'||right(v_col.most_common_vals::text,24),'NULL')||
+            ', mcf '||coalesce(left(v_col.most_common_freqs::text,24)||'...'||right(v_col.most_common_freqs::text,24),'NULL')
         WHERE v_col.most_common_vals IS NOT NULL or v_col.most_common_freqs IS NOT NULL;
     END LOOP;
 
     IF v_server_version_num>=120000 THEN  -- v12 adds extended statistics
       RETURN QUERY SELECT '  Extended '||statistics_name||' '||attnames::text||': kinds '||kinds::text||
             ', n_distinct '||coalesce(n_distinct::text,'NULL')||
-            ', mcf '||coalesce(left(most_common_freqs::text,20)||'...'||right(most_common_freqs::text,20),'NULL')||
-            ', mcbf '||coalesce(left(most_common_base_freqs::text,20)||'...'||right(most_common_base_freqs::text,20),'NULL')
+            ', mcf '||coalesce(left(most_common_freqs::text,24)||'...'||right(most_common_freqs::text,24),'NULL')||
+            ', mcbf '||coalesce(left(most_common_base_freqs::text,24)||'...'||right(most_common_base_freqs::text,24),'NULL')
         FROM pg_stats_ext
         WHERE schemaname=v_tab.schemaname AND tablename=v_tab.relname;
     END IF;

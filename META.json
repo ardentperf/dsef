@@ -2,7 +2,7 @@
     "name": "dsef",
     "abstract": "DiffStats and ExplainFull: detailed SQL reports for 3rd party help & support",
     "description": "DiffStats and ExplainFull can generate detailed reports which are useful for troubleshooting performance of a SQL statement, and especially for working with 3rd parties who are helping in the process. It reduces the amount of back-and-forth requests for information by capturing a great deal of commonly useful data about the performance of a SQL statement.",
-    "version": "2023.7.17",
+    "version": "2024.3.13",
     "maintainer": [
         "Jeremy Schneider <schneider@ardentperf.com>"
     ],
@@ -12,7 +12,7 @@
             "abstract": "DiffStats and ExplainFull: detailed SQL reports for 3rd party help & support",
             "file": "sql/dsef.sql",
             "docfile": "README.md",
-            "version": "2023.7.17"
+            "version": "2024.3.13"
        }
     },
     "resources": {

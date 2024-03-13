@@ -112,7 +112,7 @@ if we need to use single-quotes in our query text.
 
 To get even more information (including wait times on Aurora), we wrap our explain analyze 
 inside `ds_start()` and `ds_report()`. This will take a snapshot of system counters and 
-produce a report about which counters changed during query execution. Note that as of 2023, 
+produce a report about which counters changed during query execution. Note that as of 2024, 
 most open source PostgreSQL counters operate at the database level rather than the session 
 level. These can be very useful on a test system that's otherwise idle, besides the debug 
 session running this command. On a busier system, it can still be helpful to have an idea
