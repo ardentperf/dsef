@@ -27,6 +27,8 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION explain_analyze_full(p_sql text,p_format text DEFAULT 'TEXT',p_verbose boolean DEFAULT false) RETURNS TABLE ("QUERY PLAN" text) AS $$
 DECLARE
   v_server_version_num numeric = current_setting('server_version_num');
+  -- the following extracts the YugabyteDB version. Will be empty string for PostgreSQL so the test >'n.nn' will not apply
+  v_yugabytedb_version     text    =  regexp_replace(current_setting('server_version'),'([0-9.]+)(-YB-([0-9.]+)-.*)?','\3');
   v_query text;
   v_function_count numeric;
   v_tab record;
@@ -146,6 +148,12 @@ BEGIN
   END IF;
   IF v_server_version_num>=140000 THEN
     PERFORM ds_set($p$ track_wal_io_timing=on   $p$);
+  END IF;
+  IF v_yugabytedb_version>='2.18' THEN
+    v_query = v_query||',DIST';
+  END IF;
+  IF v_yugabytedb_version>='2.19' THEN
+    v_query = v_query||',DEBUG';
   END IF;
 
   v_query:=v_query||') '||p_sql;
