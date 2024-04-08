@@ -1,17 +1,28 @@
 DiffStats and ExplainFull (DSEF)
 =================================
 
-*Detailed SQL reports for 3rd party help & support*
+*Detailed SQL reports for third party help & support*
 
 .
 
 DiffStats and ExplainFull can generate detailed reports which are useful for 
 troubleshooting performance of a SQL statement, and especially for working 
-with 3rd parties who are helping in the process. It reduces the amount of 
-back-and-forth requests for information by capturing a great deal of commonly 
+with third parties who are helping in the process. It reduces the amount of
+back-and-forth requests for information by capturing a great deal of commonly
 useful data about the performance of a SQL statement.
 
-The extension consists of a number of functions which are installed into the 
+The report is textual and can be reviewed before passing it along to a third
+party. For all tables involved in the query, DSEF will look at every column
+in the table, and for any column which has them, the report will include the
+beginning and end of histograms and MCVs. This typically includes the lowest
+and highest literal values in those columns. Query text and explain plan output
+can also contain literal data values. These are all used by the query planner,
+and they are needed - for example - in order to determine if out-of-range
+statistics [1] are impacting planning. Nevertheless, in some cases it may be
+necessary to manually redact literals before passing along the report to a
+third party.
+
+The extension consists of a number of functions which are installed into the
 database. These functions fall into two broad categories:
 
 1. A function that is a wrapper around "EXPLAIN ANALYZE" - besides ensuring 
@@ -21,6 +32,9 @@ database. These functions fall into two broad categories:
 2. A set of functions to capture and report all possible statistics tracked by 
    the database during a test SQL statement execution
 
+
+[1]: for more information about out-of-range statistics, see
+https://pganalyze.com/blog/5mins-postgres-out-of-range-planner-statistics
 
 Installation
 -------------
