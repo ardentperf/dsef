@@ -4,7 +4,7 @@
 # to minimize confusion, let's keep the PGXN distribution version the same as the extension version
 #
 comment = 'DiffStats and ExplainFull'
-default_version = '2024.3.13'
+default_version = '2024.4.8'
 relocatable = true
 superuser = false
 requires = plpgsql
