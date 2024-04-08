@@ -6,3 +6,5 @@ Revision history for PostgreSQL extension dsef.
             - Include query in main ExplainFull output, bugfixes: show mcv w col, show cols missing stats
 2024.3.13   2024-03-13T00:00:00Z
             - bugfixes: v9 version number handling, dont truncate dates in histograms
+2024.4.8    2024-04-08T00:00:00Z
+            - add yugabyte support (Franck Pachot)

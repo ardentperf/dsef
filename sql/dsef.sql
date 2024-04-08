@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION ds_version() RETURNS text AS $$
   -- the version of this package
-  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2024.3.13';
+  SELECT 'DSEF for PostgreSQL (DiffStats & ExplainFull) Version: 2024.4.8';
 $$ LANGUAGE SQL;
 
 
