@@ -28,7 +28,7 @@ CREATE OR REPLACE FUNCTION explain_analyze_full(p_sql text,p_format text DEFAULT
 DECLARE
   v_server_version_num numeric = current_setting('server_version_num');
   -- the following extracts the YugabyteDB version. Will be empty string for PostgreSQL so the test >'n.nn' will not apply
-  v_yugabytedb_version     text    =  regexp_replace(current_setting('server_version'),'([0-9.]+)(-YB-([0-9.]+)-.*)?','\3');
+  v_yugabytedb_version     text    =  regexp_replace(current_setting('server_version'),'([0-9.]+)(-YB-([0-9.]+)-)?.*','\3');
   v_query text;
   v_function_count numeric;
   v_tab record;
