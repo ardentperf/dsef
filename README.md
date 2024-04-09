@@ -12,8 +12,11 @@ back-and-forth requests for information by capturing a great deal of commonly
 useful data about the performance of a SQL statement.
 
 The report is textual and can be reviewed before passing it along to a third
-party. For all tables involved in the query, DSEF will look at every column
-in the table, and for any column which has them, the report will include the
+party. The report may often contain some literal data values, which can be
+manually redacted if necessary.
+
+For all tables involved in the query, DSEF will look at every column in
+the table, and for any column which has them, the report will include the
 beginning and end of histograms and MCVs. This typically includes the lowest
 and highest literal values in those columns. Query text and explain plan output
 can also contain literal data values. These are all used by the query planner,
